@@ -11,4 +11,9 @@ mybatis:
   type-aliases-package: org.example.pojo
   configuration:
     map-underscore-to-camel-case: true
+mybatis-plus:
+  mapper-locations: classpath*:com/example/mapper/*.xml
+  type-aliases-package: org.example.pojo
+  configuration:
+    map-underscore-to-camel-case: true
 token: Authorization
