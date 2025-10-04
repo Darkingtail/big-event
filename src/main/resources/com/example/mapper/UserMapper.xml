@@ -13,6 +13,55 @@
         <result property="updateTime" column="update_time"/>
     </resultMap>
 
+    <update id="update">
+        update user
+        <set>
+            <if test="username != null and username != ''">
+                username = #{username},
+            </if>
+            <if test="password != null and password != ''">
+                password = #{password},
+            </if>
+            <if test="nickname != null and nickname != ''">
+                nickname = #{nickname},
+            </if>
+            <if test="email != null and email != ''">
+                email = #{email},
+            </if>
+            <if test="userPic != null and userPic != ''">
+                user_pic = #{userPic},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <update id="updateAvatar">
+        update user
+        <set>
+            <if test="userPic != null and userPic != ''">
+                user_pic = #{userPic},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <update id="updatePassword">
+        update user
+        <set>
+            <if test="password != null and password != ''">
+                password = #{password},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
     <select id="getUserByName" resultMap="UserResultMap">
         select id,
                username,
