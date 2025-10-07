@@ -12,11 +12,18 @@ public class WebConfig implements WebMvcConfigurer {
     @Autowired
     private LoginInterceptor loginInterceptor;
 
+    /**
+     *  - 启动应用后访问 http://localhost:8080/
+     *  - 仍可访问示例页面 http://localhost:8080/pages/index.html
+     *  - 上传文件后用 http://localhost:8080/files/<文件名> 访问
+     * */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginInterceptor).excludePathPatterns(
                 "/user/login",
-                "/user/register"
+                "/user/register",
+                "/files/*",
+                "/pages/*" //
         );
     }
 }

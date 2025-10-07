@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>欢迎使用 Big Event 服务</title>
+    <style>
+        :root{color-scheme: light dark}
+        body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif; margin: 2rem; line-height: 1.6; }
+        .wrap { max-width: 860px; margin: 0 auto; }
+        h1 { margin: 0 0 10px; font-size: 26px; }
+        p { margin: 0 0 10px; }
+        .card { border: 1px solid #e5e7eb; border-radius: 10px; padding: 18px; box-shadow: 0 2px 6px rgba(0,0,0,.05); }
+        code { background: #f3f4f6; padding: 2px 6px; border-radius: 4px; }
+        a { color: #2563eb; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        ul{padding-left:1.2rem}
+    </style>
+    </head>
+<body>
+<div class="wrap">
+    <h1>欢迎 👋</h1>
+    <p>这是默认欢迎页。你可以从这里快速验证静态资源和文件上传是否正常工作。</p>
+    <div class="card">
+        <h2>快速链接</h2>
+        <ul>
+            <li><a href="/pages/index.html">静态页面示例（/pages/index.html）</a></li>
+            <li><a href="/files/">文件目录（需要已上传文件后按具体文件名访问）</a></li>
+        </ul>
+        <h3>上传接口</h3>
+        <p>POST <code>/upload</code>，表单字段：<code>file</code>（multipart/form-data）。</p>
+        <p>示例 cURL：</p>
+        <pre><code>curl -F "file=@/path/to/example.jpg" http://localhost:8080/upload</code></pre>
+        <p>成功后可通过 <code>/files/&lt;返回的文件名&gt;</code> 访问文件。</p>
+    </div>
+</div>
+</body>
+</html>
+
