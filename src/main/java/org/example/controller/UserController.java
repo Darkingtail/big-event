@@ -9,12 +9,16 @@ import org.example.utils.Md5Util;
 import org.example.utils.ThreadLocalUtil;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/user")
@@ -22,6 +26,15 @@ import java.util.Map;
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+
+    @Autowired
+    private HttpServletRequest request;
+
+    @Value("${token}")
+    private String tokenHeaderName;
 
     @PostMapping("/register")
     public Result register(@Pattern(regexp = "^[a-zA-Z0-9]{6,18}$", message = "用户名必须是6-18位数字或字母") String username, @Pattern(regexp = "^[a-zA-Z0-9]{6,18}$", message = "密码必须是6-18位数字或字母") String password) {
@@ -50,8 +63,10 @@ public class UserController {
             map.put("id", user.getId());
             map.put("username", user.getUsername());
             // map.put("password", user.getPassword());
-            String s = JwtUtil.genToken(map, 1000L * 60 * 60 * 4); // 4小时过期
-            return Result.success(s);
+            String token = JwtUtil.genToken(map, 1000L * 30); // 30秒过期，测试redis
+            // 将redis添加到redis,设置key和value都是token
+            stringRedisTemplate.opsForValue().set(token, token, 30, TimeUnit.SECONDS);
+            return Result.success(token);
         }
     }
 
@@ -118,6 +133,11 @@ public class UserController {
             }
             String p = Md5Util.getMD5String(new_pwd);
             userService.updatePassword(p, id);
+            // 删除redis中老的token
+            String token = request.getHeader(tokenHeaderName);
+            if (StringUtils.hasLength(token)) {
+                stringRedisTemplate.opsForValue().getOperations().delete(token);
+            }
             return Result.success("更新密码成功");
         } catch (Exception e) {
             throw new RuntimeException(e);
