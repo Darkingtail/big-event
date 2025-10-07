@@ -21,3 +21,18 @@ mybatis-plus:
     db-config:
       id-type: auto
 token: Authorization
+
+# --- Static resource mapping for uploaded files ---
+# Option A (active, recommended): Java config maps only "/files/**" to the
+# physical directory "${user.dir}/files". See:
+#   src/main/java/org/example/config/StaticResourceConfig.java
+#
+# Option B (disabled/commented): Configure global static locations here to also
+# include the local files directory. Uncomment to enable, but note this exposes
+# the path under the default static handler (pattern usually "/**"), not just
+# "/files/**". Prefer Option A if you want precise scoping.
+#
+# spring:
+#   web:
+#     resources:
+#       static-locations: classpath:/static/, file:${user.dir}/files/
